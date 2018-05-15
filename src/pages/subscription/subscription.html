@@ -1,0 +1,82 @@
+<!--
+  Generated template for the Subscription page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<!--
+  <h3 padding-top padding-bottom *ngIf="products">To pay please choose your subscription method</h3>
+-->
+  <div *ngFor="let product of products, let i = index" class="subscr" tappable>
+    <div (click)="showed(i,product)">
+<!--
+      <div class="subscr_left"></div>
+-->
+      <div class="subscr_center" [class.is_showed]="is_showed[i]"
+           [attr.data-selected]="false">
+        <h2>{{product.title}}</h2>
+        <p>{{product.description}}</p><span class="read_more">קרא עוד...</span>
+        <div class="continue">לחץ כאן כדי להמשיך</div>
+      </div>
+      <div class="subscr_right">{{product.price}}</div>
+    </div>
+  </div>
+
+ <!-- <div class="subscr" tappable>
+    <div>
+&lt;!&ndash;
+      <div class="subscr_left"></div>
+&ndash;&gt;
+      <div class="subscr_center"
+           [attr.data-selected]="false">
+        <h2>product title</h2>
+        <p>
+          product description Click here to continue Click here to continue Click here to continue Click here to continue
+          Click here to continue Click here to continue Click here to continue Click here to continue Click here to continue
+        </p><span class="read_more">קרא עוד...</span>
+        <div class="continue">Click here to continue</div>
+      </div>
+      <div class="subscr_right">123.12 $</div>
+    </div>
+  </div>-->
+  <!--<div   class="subscr" tappable>
+      <div class="subscr_center" (click)="showed(i,product)" [class.is_showed]="is_showed[i]" [attr.data-selected]="false" >
+          <h2 (click)="subscribe()">3 month subscription</h2>
+          <p>dasdfa sdf asd fadsdasfal;df asdopasdf asfkladfs asfdfa</p><span class="read_more">read more...</span>
+      </div>
+      <div (click)="subscribe()" class="subscr_right">$224.90</div>
+  </div>
+  <div   class="subscr" tappable>
+      <div class="subscr_center" (click)="showed(i,product)" [class.is_showed]="is_showed[i]" [attr.data-selected]="false" >
+          <h2 (click)="subscribe()">3 month subscription</h2>
+          <p>dasdfa sdf asd fadsdasfal;df asdopasdf asfkladfs asfdfa</p><span class="read_more">read more...</span>
+      </div>
+      <div (click)="subscribe()" class="subscr_right">$224.90</div>
+  </div>-->
+  <div *ngIf="products" padding-top #desc>{{safeHtml(desc)}}</div>
+  <div *ngIf="products" padding-top>
+    <div *ngFor="let qa of faq, let i = index" padding-top padding-bottom>
+      <div class="question" tappable (click)="hightlightStatus[i]=!hightlightStatus[i]"
+           [class.highlight]="hightlightStatus[i]" [attr.data-selected]="false">{{qa.q }}
+      </div>
+      <div class="answer" [class.highlight]="hightlightStatus[i]" [innerHTML]="api.safeHtml(qa.a)">
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+
+  <ion-navbar class="footerMenu">
+    <ion-title></ion-title>
+  </ion-navbar>
+
+</ion-footer>

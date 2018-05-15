@@ -1,8 +1,14 @@
 {
-  "name": "myApp",
+  "name": "shedate",
   "app_id": "",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "proxies": [
+    {
+      "path": "/",
+      "proxyUrl": "https://www.shedate.co.il/api/v1"
+    }
+  ]
 }
