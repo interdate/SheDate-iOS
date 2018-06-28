@@ -18,7 +18,7 @@ export class SelectPage {
   data: any;
   options: any = [];
   page: any = 1;
-    count: any = 20;
+    count: any = 50;
     opt_add:any = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
@@ -37,7 +37,7 @@ export class SelectPage {
       if(this.opt_add) {
           let start = 0;
           let finish = this.data.choices.length;
-          if (this.page == 1) {
+          if (this.page == 1 && finish > this.count) {
               finish = this.count;
           } else {
               start = this.count * (this.page - 1);

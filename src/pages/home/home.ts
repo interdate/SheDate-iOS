@@ -1,13 +1,18 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, Injectable} from "@angular/core";
 import {
-    NavController, NavParams, LoadingController, ToastController, Events, InfiniteScroll,
+    NavController,
+    NavParams,
+    LoadingController,
+    ToastController,
+    Events,
+    InfiniteScroll,
     AlertController
-} from 'ionic-angular';
-import {Http} from '@angular/http';
-import {Storage} from '@ionic/storage';
-import {ApiQuery} from '../../library/api-query';
+} from "ionic-angular";
+
+import {Http} from "@angular/http";
+import {Storage} from "@ionic/storage";
+import {ApiQuery} from "../../library/api-query";
 import {ProfilePage} from "../profile/profile";
-import { Observable } from 'rxjs';
 
 declare var $: any;
 
@@ -15,6 +20,8 @@ declare var $: any;
     selector: 'page-home',
     templateUrl: 'home.html'
 })
+
+@Injectable()
 export class HomePage {
     @ViewChild(InfiniteScroll) scroll: InfiniteScroll;
 
@@ -33,11 +40,12 @@ export class HomePage {
     filter: any; //= {filter: '', visible: ''}
     users: any;//Array<{ id: string, isOnline: string, isAddBlackListed: string, nickName: string, photo: string, age: string, region_name: string, image: string, about: {}, component: any}>;
     texts: { like: string, add: string, message: string, remove: string, unblock: string, no_results: string };
-    params: { action: any, filter: any, page: any, list: any, searchparams: any }
+    params: any
         = {
         action: 'online',
         filter: 'new',
         page: 1,
+        usersCount: 10,
         list: '',
         searchparams: {region: '', agefrom: 0, ageto: 0, sexpreef: '', meritalstat: '', userNick: ''}
     };
@@ -70,7 +78,7 @@ export class HomePage {
             this.params = JSON.parse(this.params_str);
         }
 
-        if(!navParams.get('params') || navParams.get('params') == 'login'){
+        if (!navParams.get('params') || navParams.get('params') == 'login') {
             this.api.setLocation();
         }
 
@@ -199,22 +207,22 @@ export class HomePage {
 
     unFavorites(user) {
 
-            let params = JSON.stringify({
-                list: 'Unfavorite'
+        let params = JSON.stringify({
+            list: 'Unfavorite'
+        });
+
+        this.http.post(this.api.url + '/user/managelists/favi/0/' + user.id, params, this.api.setHeaders(true, this.username, this.password)).subscribe(data => {
+            let toast = this.toastCtrl.create({
+                message: data.json().success,
+                duration: 3000
             });
 
-            this.http.post(this.api.url + '/user/managelists/favi/0/' + user.id, params, this.api.setHeaders(true, this.username, this.password)).subscribe(data => {
-                let toast = this.toastCtrl.create({
-                    message: data.json().success,
-                    duration: 3000
-                });
+            console.log(this.users);
 
-                console.log(this.users);
-
-                toast.present();
-                this.users.splice(this.users.indexOf(user), 1);
-                this.events.publish('statistics:updated');
-            });
+            toast.present();
+            this.users.splice(this.users.indexOf(user), 1);
+            this.events.publish('statistics:updated');
+        });
 
     }
 
@@ -228,7 +236,7 @@ export class HomePage {
                 list: 'Favorite'
             });
 
-            this.http.post(this.api.url + '/user/managelists/favi/1/'+ user.id, params, this.api.setHeaders(true, this.username, this.password)).subscribe(data => {
+            this.http.post(this.api.url + '/user/managelists/favi/1/' + user.id, params, this.api.setHeaders(true, this.username, this.password)).subscribe(data => {
                 let toast = this.toastCtrl.create({
                     message: data.json().success,
                     duration: 3000
@@ -249,7 +257,14 @@ export class HomePage {
             list: '',
             filter: this.filter,
             page: 1,
-            searchparams: {region: this.params.searchparams.region, agefrom: this.params.searchparams.agefrom, ageto: this.params.searchparams.ageto, sexpreef: this.params.searchparams.sexpreef, meritalstat: this.params.searchparams.meritalstat, userNick: this.params.searchparams.userNick}
+            searchparams: {
+                region: this.params.searchparams.region,
+                agefrom: this.params.searchparams.agefrom,
+                ageto: this.params.searchparams.ageto,
+                sexpreef: this.params.searchparams.sexpreef,
+                meritalstat: this.params.searchparams.meritalstat,
+                userNick: this.params.searchparams.userNick
+            }
 
         });
 
@@ -259,7 +274,14 @@ export class HomePage {
                 list: this.params.list,
                 filter: this.filter,
                 page: 1,
-                searchparams: {region: this.params.searchparams.region, agefrom: this.params.searchparams.agefrom, ageto: this.params.searchparams.ageto, sexpreef: this.params.searchparams.sexpreef, meritalstat: this.params.searchparams.meritalstat, userNick: this.params.searchparams.userNick}
+                searchparams: {
+                    region: this.params.searchparams.region,
+                    agefrom: this.params.searchparams.agefrom,
+                    ageto: this.params.searchparams.ageto,
+                    sexpreef: this.params.searchparams.sexpreef,
+                    meritalstat: this.params.searchparams.meritalstat,
+                    userNick: this.params.searchparams.userNick
+                }
             })
         }
 
@@ -288,7 +310,7 @@ export class HomePage {
                 this.user_counter = data.json().users.length;
                 this.form_filter = data.json().filters;
                 this.filter = data.json().filter;
-                if (data.json().users.length < 10) {
+                if (data.json().users.length < this.params.usersCount) {
                     this.loader = false;
                 }
                 //this.setDistanceFormat();
@@ -303,7 +325,7 @@ export class HomePage {
                 this.user_counter = data.json().users.length;
                 this.form_filter = data.json().filters;
                 this.filter = data.json().filter;
-                if (data.json().users.length < 10) {
+                if (data.json().users.length < this.params.usersCount) {
                     this.loader = false;
                 }
                 //this.setDistanceFormat();
@@ -312,40 +334,39 @@ export class HomePage {
     }
 
 
-    moreUsers(infiniteScroll: any) {
+
+    moreUsers(infiniteScroll) {
+
+        this.page_counter++;
+
+        this.getMoreUsers(infiniteScroll);
+
+        if( this.page_counter == 1000){
+            infiniteScroll.enable(false);
+        }
+    }
+
+    getMoreUsers(infiniteScroll?){
         let that = this;
 
-        if (that.loader && that.scrollResults) {
-            that.scrollResults = false;
-            that.page_counter++;
-            that.params.page = that.page_counter;
-            that.params_str = JSON.stringify(that.params);
-            that.http.post(that.api.url + '/users/search/', that.params_str, that.api.setHeaders(true)).subscribe(data => {
-                if (data.json().users.length < 10) {
-                    that.loader = false;
-                }else {
-                    that.loader = true;
-                }
-                for (let person of data.json().users) {
-                    that.users.push(person);
-                }
-                setTimeout(() => {
+            this.params.page = that.page_counter;
+            this.params_str = JSON.stringify(that.params);
+            this.http.post(that.api.url + '/users/search/', that.params_str, that.api.setHeaders(true)).subscribe(data => {
+                /*if(data.json().users.length < this.params.usersCount){
+                 infiniteScroll.enable(false);
+                 }*/
+                this.users = that.users.concat(data.json().users);
+                if (infiniteScroll) {
                     infiniteScroll.complete();
-                    that.scrollResults = true;
-                }, 10);
+                }
+
             });
-            //setTimeout(() => {
 
-                //infiniteScroll.complete();
-            //}, 10);
-
-        }
     }
 
     ionViewWillEnter() {
         this.api.pageName = 'HomePage';
         $('.back-btn').hide();
-
     }
 
 

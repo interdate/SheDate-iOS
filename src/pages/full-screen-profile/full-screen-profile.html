@@ -25,9 +25,9 @@
     <div class="close-warp" tappable (click)="goBack()">
      <div class="close"><img alt="close" src="assets/img/icons/psclose.png"></div>
      </div>
-    <ion-slides>
+    <ion-slides initialSlide="{{i}}" [loop]="(user.photos.length > 1)">
       <ion-slide *ngFor="let usr of user.photos">
-        <img src="{{ usr.url }}">
+        <img src="{{ usr.large }}">
       </ion-slide>
   
     </ion-slides>

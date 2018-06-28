@@ -28,7 +28,7 @@ import { AppVersion } from '@ionic-native/app-version';
 import {InAppPurchase} from "@ionic-native/in-app-purchase";
 
 
-declare var $: any;
+import * as $ from "jquery";
 
 @Component({
     templateUrl: 'app.html',
@@ -230,10 +230,10 @@ export class MyApp {
 
                 let page = this.nav.getActive();
                 let headers = this.api.setHeaders(true);
-                if (page.instance instanceof ChangePhotosPage) {
+               /* if (page.instance instanceof ChangePhotosPage) {
                     headers = this.api.setHeaders(true, false, false, '1');
                 }
-
+*/
                 this.http.get(this.api.url + '/user/statistics/', this.api.setHeaders(true)).subscribe(data => {
 
                     let statistics = data.json().statistics;
@@ -310,10 +310,7 @@ export class MyApp {
             {_id: '', icon: 'log-in', title: menu.login, component: LoginPage, count: ''},
             {_id: 'blocked', icon: '', title: menu.forgot_password, component: 'PasswordRecoveryPage', count: ''},
             {_id: '', icon: 'mail', title: menu.contact_us, component: 'ContactUsPage', count: ''},
-            {_id: '', icon: 'person-add', title: menu.join_free, component: RegisterPage, count: ''},
-         /*   {_id: '', icon: 'ribbon', title: 'Fingerprint1', component: FingerprintPage, count: ''},
-            {_id: '', icon: 'ribbon', title: 'Fingerprint2', component: Fingerprint2Page, count: ''},
-            {_id: '', icon: 'ribbon', title: 'Fingerprint3', component: Fingerprint3Page, count: ''},*/
+            {_id: '', icon: 'person-add', title: menu.join_free, component: RegisterPage, count: ''}
         ];
 
         this.menu_items = [
@@ -786,7 +783,7 @@ export class MyApp {
             }
 
             $('.question').click(function () {
-                $('.answer').hide();
+                //$('.answer').hide();
                 $(this).find('.answer').toggle();
             });
 

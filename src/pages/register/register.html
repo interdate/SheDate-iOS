@@ -129,7 +129,7 @@
                     <!--[ngClass]="{'yellow-bg': err.experienceId0.errors && err.experienceId0.errors?.length != 0 }"-->
                     <div class="birthday">
                         <ion-item *ngFor="let select of field.sel" (click)="openSelect(select,i)">
-                            <div class="select-value">{{select.valLabel}}</div>
+                            <div class="select-value">{{select.valLabel ? select.valLabel : select.placeholder}}</div>
                             <!--<ion-select  name="{{ select.name }}"
                                     [(ngModel)]="user[select.name]" id="{{ select.name }}">
                                 <ion-option *ngFor="let option of select.choices;"

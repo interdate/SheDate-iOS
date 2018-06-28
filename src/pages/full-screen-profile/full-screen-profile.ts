@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
-import { ApiQuery } from '../../library/api-query';
-import { Http } from '@angular/http';
+import {Component} from "@angular/core";
+import {IonicPage, NavController, NavParams, ToastController, AlertController} from "ionic-angular";
+import {ApiQuery} from "../../library/api-query";
+import {Http} from "@angular/http";
+declare var $: any;
 
 /**
  * Generated class for the FullScreenProfilePage page.
@@ -12,47 +13,50 @@ import { Http } from '@angular/http';
 
 @IonicPage()
 @Component({
-  selector: 'page-full-screen-profile',
-  templateUrl: 'full-screen-profile.html',
+    selector: 'page-full-screen-profile',
+    templateUrl: 'full-screen-profile.html',
 })
 export class FullScreenProfilePage {
 
-  user:any;
-  myId:any;
-  defurl:any; 
+    user: any;
+    myId: any;
+    defurl: any;
+    i:any = 0;
 
-  constructor(public toastCtrl:ToastController,
-              public navCtrl:NavController,
-              public navParams:NavParams,
-              public http:Http,
-              public alertCtrl: AlertController,
-              public api:ApiQuery) {
+    constructor(public toastCtrl: ToastController,
+                public navCtrl: NavController,
+                public navParams: NavParams,
+                public http: Http,
+                public alertCtrl: AlertController,
+                public api: ApiQuery) {
 
-      this.user = navParams.get('user');
+        this.user = navParams.get('user');
+        this.i = navParams.get('i');
+        this.api.storage.get('user_id').then((val) => {
 
-      this.api.storage.get('user_id').then((val) => {
+            if (val) {
+                this.myId = val;
+            }
+        });
+    }
 
-          if (val) {
-              this.myId = val;
-          }
-      });
-  }
+    goBack() {
+        this.navCtrl.pop();
+    }
 
-  goBack() {
-      console.log('test');
-      this.navCtrl.pop();
-  }
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad FullScreenProfilePage');
+    }
 
-  ionViewDidLoad() {
-      console.log('ionViewDidLoad FullScreenProfilePage');
-  }
+    ionViewDidLeave() {
+        $('.back-btn').show();
+    }
 
-
-  toDialog(user) {
-      this.navCtrl.push('DialogPage', {
-          user: user
-      });
-  }
+    toDialog(user) {
+        this.navCtrl.push('DialogPage', {
+            user: user
+        });
+    }
 
     addFavorites(user) {
 
@@ -66,7 +70,7 @@ export class FullScreenProfilePage {
                 list: 'Favorite'
             });
 
-            this.http.post(this.api.url + '/user/managelists/favi/1/'+ user.id, params, this.api.setHeaders(true)).subscribe(data => {
+            this.http.post(this.api.url + '/user/managelists/favi/1/' + user.id, params, this.api.setHeaders(true)).subscribe(data => {
                 let toast = this.toastCtrl.create({
                     message: data.json().success,
                     duration: 3000
@@ -113,8 +117,8 @@ export class FullScreenProfilePage {
         alert.present();
     }
 
-  ionViewWillEnter() {
-      this.api.pageName = 'FullScreenProfilePage';
-  }
+    ionViewWillEnter() {
+        this.api.pageName = 'FullScreenProfilePage';
+    }
 
 }

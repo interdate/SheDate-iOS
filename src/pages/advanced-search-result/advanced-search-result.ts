@@ -271,6 +271,37 @@ export class AdvancedSearchResultPage {
             this.api.hideLoad();
         });
     }
+    /*
+    moreUsers(infiniteScroll) {
+
+        this.page_counter++;
+
+        this.moreUsers(infiniteScroll);
+
+        if( this.page_counter == 1000){
+            infiniteScroll.enable(false);
+        }
+    }
+
+    getMoreUsers(infiniteScroll?){
+        let that = this;
+
+        this.params.page = that.page_counter;
+        this.params_str = JSON.stringify(that.params);
+        this.http.post(that.api.url + '/users/search/', that.get_params, that.api.setHeaders(true)).subscribe(data => {
+            /!*if(data.json().users.length < this.params.usersCount){
+             infiniteScroll.enable(false);
+             }*!/
+
+
+            this.users = that.users.concat(data.json().users);
+            if (infiniteScroll) {
+                infiniteScroll.complete();
+            }
+
+        });
+
+    }*/
 
     moreUsers(infiniteScroll: any) {
         //alert(this.loader);
@@ -292,8 +323,10 @@ export class AdvancedSearchResultPage {
                 for (let person of data.json().users) {
                     this.users.push(person);
                 }
+                if (infiniteScroll) {
+                    infiniteScroll.complete();
+                }
             });
         }
-        infiniteScroll.complete();
     }
 }

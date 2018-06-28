@@ -5,7 +5,18 @@ page-profile {
   }
 
   .swiper-pagination-bullet-active {
-    background: #ec649f;
+    background: #ec2027;
+    width: 11px;
+    height: 11px;
+    border: 1px #fff solid;
+  }
+
+  .swiper-pagination-bullet:not(.swiper-pagination-bullet-active){
+    border: 1px #fff solid;
+    width: 12px;
+    height: 12px;
+    opacity: 1;
+    background: rgba(0,0,0,0.2);
   }
 
   .pmtitle.bottom .button-ios{

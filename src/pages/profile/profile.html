@@ -32,11 +32,9 @@
         <div *ngIf="user.isOnline == '1'" class="online"></div>
 
         <div class="photos" [ngStyle]="{ 'direction': 'ltr'}">
-            <div *ngIf="user.photo" tappable (click)="fullPagePhotos(user)" class="avatar"
-                 [ngStyle]="{ 'background-image': 'url(' + user.mainImage?.url+ ')'}"></div>
             <ion-slides pager="true">
-                <ion-slide  *ngFor="let usr of user.photos">
-                    <div tappable (click)="fullPagePhotos(user)" [ngStyle]="{ 'background-image': 'url('+ usr?.url + ')'}"
+                <ion-slide *ngFor="let usr of photos; let i = index">
+                    <div tappable (click)="fullPagePhotos(i)" [ngStyle]="{ 'background-image': 'url('+ usr?.url+ ')'}"
                          class="avatar"></div>
                 </ion-slide>
             </ion-slides>

@@ -35,8 +35,13 @@
                 <div *ngIf="user.isOnline == '1'" class="online"></div>
                 <div *ngIf="user.isNew == '1'" class="new-user"></div>
                 <div *ngIf="user.isPaying == '1'" class="paying"></div>
-                <div tappable (click)="itemTapped(user)" [ngStyle]="{ 'background-image': 'url(' + user.photo + ')','background-position': 'top'}"
+               <div tappable (click)="itemTapped(user)" [ngStyle]="{ 'background-image': 'url(' + user.photo+ ')','background-position': 'top'}"
                      class="avatar"></div>
+
+<!--
+                <ion-img class="avatar" [ngStyle]="{ 'background-image': 'url(' + user.photo + ')','background-position': 'top'}"></ion-img>
+-->
+
 
                 <!-- <div *ngIf="user.photo != '/images/no_photo_2.jpg' && user.photo != '/images/no_photo_1.jpg'" tappable" (click)="itemTapped(user)" [ngStyle]="{ 'background-image': 'url(' + user.photo + ')'}"
                      class="avatar"></div> -->
@@ -85,9 +90,11 @@
             </div>
         </ion-card>
     </ion-list>
+<!--
     <div *ngIf="loader == true" class="loader"><img src="assets/img/loader.gif"></div>
-    <ion-infinite-scroll #scroll threshold="600px" (ionInfinite)="moreUsers($event)">
-        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+-->
+    <ion-infinite-scroll threshold="700px" (ionInfinite)="moreUsers($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 </ion-content>
 <ion-footer>

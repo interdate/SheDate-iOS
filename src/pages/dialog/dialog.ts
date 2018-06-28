@@ -71,7 +71,7 @@ export class DialogPage {
 
         this.user = navParams.get('user');
 
-        this.getPage();
+        this.getPage(true);
 
 
         this.storage.get('user_id').then((val) => {
@@ -117,7 +117,7 @@ export class DialogPage {
         this.micStatus === true ? this.micStatus = false : this.micStatus = true;
     }
 
-    getPage() {
+    getPage(scroll) {
 
         var userId = typeof this.user.userId != "undefined" ? this.user.userId : this.user.id;
 
@@ -134,15 +134,19 @@ export class DialogPage {
             this.alert = data.json().blacklist != '' ? data.json().blacklist : '';
             this.contactCurrentReadMessagesNumber = data.json().contactCurrentReadMessagesNumber;
 
-            this.scrollToBottom();
+            if(scroll == true){
+                this.scrollToBottom();
+            }
+
         }, err => {
             console.log("Oops!");
         });
     }
 
-    deleteMsg(message) {
+    deleteMsg(message,index) {
+        this.messages.splice(index,1);
         this.http.post(this.api.url + '/user/message/del/' + message.id + '/' + message.from, {}, this.api.setHeaders(true)).subscribe(data => {
-            this.getPage();
+            this.getPage(false);
         });
     }
 
@@ -161,7 +165,7 @@ export class DialogPage {
             this.setMessagesAsRead([message.id]);
             if (!data.json().userHasFreePoints) {
                 // Update page
-                this.getPage();
+                this.getPage(true);
             }
         });
     }

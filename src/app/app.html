@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar style="direction:ltr;">
         <button menuToggle="right">
             <ion-icon id="menu"></ion-icon>
         </button>
@@ -7,11 +7,11 @@
     </ion-navbar>
     <div tappable (click)="goBack()" class="back-btu-wrap">
         <div class="back-btn">
-            <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+            <ion-icon name="ios-arrow-back-outline"></ion-icon>
         </div>
     </div>
 </ion-header>
-<ion-menu side="right" [content]="content" class="side-menu" id="menu1">
+<ion-menu [content]="content" class="side-menu" id="menu1">
     <ion-content>
         <ion-list>
             <div class="menu-top" *ngIf="is_login" >
@@ -30,8 +30,8 @@
                 <button *ngIf="(menu_item._id == 'subscribe' && isPaying == 0) || menu_item._id != 'subscribe'" ion-item tappable (click)="openPage(menu_item)">
                     <ion-icon id="{{menu_item._id}}" name="{{menu_item.icon}}"></ion-icon>
                     {{menu_item.title}}
-                    <ion-icon class="contact-arrow" *ngIf="menu_item._id == 'stats'" ios="ios-arrow-forward"
-                              md="ios-arrow-forward"></ion-icon>
+                    <ion-icon class="contact-arrow" style="position: absolute;
+    left: 4px;" *ngIf="menu_item._id == 'stats'" ios="ios-arrow-forward"></ion-icon>
                     <ion-badge class="btn-orange" *ngIf="is_login && menu_item.count != 0" item-right>{{ menu_item.count
                         }}
                     </ion-badge>
@@ -48,7 +48,7 @@
         <ion-list>
             <button color="light" class="left" small ion-button icon-right outline menuClose="menu2" (click)="menu1Active()">
                 {{ back }}
-                <ion-icon name="arrow-back"></ion-icon>
+                <ion-icon name="arrow-forward"></ion-icon>
             </button>
             <button ion-item *ngFor="let menu_item_settings of menu_items_settings"
                     tappable (click)="openPage(menu_item_settings)">

@@ -74,8 +74,8 @@ export class RegisterPage {
                         username: this.user.userNick,
                         password: this.user.userPass,
                         user_id: this.user.userId,
-                        status: '',
-                        user_photo: ''
+                        status: 'login',
+                        user_photo: 'https://www.shedate.co.il/images/users/small/0.jpg'
                     });
                     this.api.storage.set('status', 'login');
                     this.api.storage.set('user_id', this.user.userId);
@@ -130,14 +130,12 @@ export class RegisterPage {
     openSelect(field, index) {
         if(typeof field == 'undefined'){
             field = false;
-
         }
 
         let profileModal = this.api.modalCtrl.create(SelectPage, {data: field});
         profileModal.present();
 
         profileModal.onDidDismiss(data => {
-            console.log(data);
             if (data) {
                 let choosedVal = data.val;
                 this.user[field.name] = choosedVal;

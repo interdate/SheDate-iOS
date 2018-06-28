@@ -11,11 +11,8 @@
   </ion-navbar>
 
 </ion-header>
-<div (click)="back()" class="back-btn">
-  <ion-icon name="ios-arrow-back-outline"></ion-icon>
-</div>
-
 <ion-content padding>
+  <div text-center *ngIf="!messages">אין תוצאות</div>
   <ion-card [ngClass]="{'other-msg': user.userId == msg?.from }" *ngFor="let msg of messages"
             class="usr_msg msg-item">
     <ion-grid>

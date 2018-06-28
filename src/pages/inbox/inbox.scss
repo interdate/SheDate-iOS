@@ -1,6 +1,23 @@
 page-inbox {
  .message { min-height: 50px; }
  .gray-bg { background: #ccc }
+ .admin-messages {
+    position: relative;
+    .counter {
+      right: calc(15% - 5px);
+      z-index: 999;
+    }
+   button.button-default {
+     border-color: #ec649f7a;
+     background: #ec649f;
+     color: #fff;
+     /* text-align: center; */
+     display: block;
+     margin: 12px auto 0 auto;
+     width: 70%;
+   }
+ }
+
  .counter {
     clear: both;
     margin-top: 8px;
@@ -10,7 +27,8 @@ page-inbox {
   }
   ion-card { position: relative; }
 
+
   .highlight{
-    background-color: #f1bad1;
+    background-color: #ec649f;
   }
 }

@@ -53,6 +53,7 @@
     "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-inapppurchase": "^1.2.0",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
+    "cordova-plugin-ionic-webview": "^1.2.1",
     "cordova-plugin-market": "^1.2.0",
     "cordova-plugin-media": "^5.0.2",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -70,6 +71,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.9",
+    "ionic": "3.20.0",
     "typescript": "~2.6.2"
   },
   "description": "An Ionic project",
@@ -100,7 +102,10 @@
       },
       "cordova-plugin-inapppurchase": {},
       "cordova-plugin-file": {},
-      "cordova-plugin-camera": {}
+      "cordova-plugin-camera": {
+        "CAMERA_USAGE_DESCRIPTION": "camera"
+      },
+      "cordova-plugin-ionic-webview": {}
     },
     "platforms": [
       "browser",

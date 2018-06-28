@@ -143,20 +143,30 @@ ion-range.range-md.range-has-pin, ion-range.range-ios.range-has-pin {
 }
 
 .infinite-loading-spinner {
-  display: none;
+  //display: none;
 }
 
 ion-card.grey {
   background-color: #ccc;
 }
 
-ion-infinite-scroll {
-  clear: both;
-
+ion-infinite-scroll, ion-infinite-scroll *{
+  //clear: both;
+  direction: ltr;
 }
 
+
 ion-infinite-scroll-content{
-  min-height: 45px;
+  min-height: 14px !important;
+}
+
+.infinite-loading{
+  margin: 0 0 22px;
+}
+
+.back-btu-wrap {
+  position: absolute;
+  padding: 30px;
 }
 
 .age-label {
@@ -217,7 +227,7 @@ ion-infinite-scroll-content{
 }
 
 .list-ios {
-  margin-top: 32px;
+ // margin-top: 32px;
 }
 
 #menu1 .contact-arrow {

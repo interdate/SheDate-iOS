@@ -1,6 +1,11 @@
 import {Component, ViewChild} from "@angular/core";
 import {
-    NavController, NavParams, Nav, ToastController, Content, LoadingController,
+    NavController,
+    NavParams,
+    Nav,
+    ToastController,
+    Content,
+    LoadingController,
     AlertController
 } from "ionic-angular";
 import {Http} from "@angular/http";
@@ -25,6 +30,8 @@ export class ProfilePage {
     isAbuseOpen: any = false;
 
     user: any = {};
+
+    photos: any = [];
 
     texts: { lock: any, unlock: any } = {lock: '', unlock: ''};
 
@@ -56,12 +63,24 @@ export class ProfilePage {
         var user = navParams.get('user');
 
         if (user) {
-
+            if (user.photo && !user.photos) {
+                user.photos = [{url: user.photo,large: user.photo.replace('h_600,w_600','h_800,w_800')}];
+            }
             this.user = user;
-
+            this.photos = this.user.photos;
+            console.log(this.photos);
 
             this.http.get(api.url + '/user/profile/' + this.user.id, api.setHeaders(true)).subscribe(data => {
                 this.user = data.json();
+                if (this.photos.length < this.user.photos.length) {
+                    for (let i = 0; i < this.user.photos.length; i++) {
+                        if (i > 0) {
+                            this.photos.push(this.user.photos[i]);
+                        }
+                    }
+                }
+
+                //this.user.mainImage.url = this.user.photos[0];
                 this.formReportAbuse = data.json().formReportAbuse;
                 this.texts = data.json().texts;
                 loading.dismiss();
@@ -76,6 +95,14 @@ export class ProfilePage {
                     this.myId = val;
                     this.http.get(api.url + '/user/profile/' + this.myId, api.setHeaders(true)).subscribe(data => {
                         this.user = data.json();
+                        // if (this.photos.length < this.user.photos.length) {
+                        //     for (let i = 0; i < this.user.photos.length; i++) {
+                        //         //if (i > 0) {
+                        //             this.photos.push(this.user.photos[i]);
+                        //         //}
+                        //     }
+                        // }
+                        this.photos = this.user.photos;
                         this.formReportAbuse = data.json().formReportAbuse;
                         this.texts = data.json().texts;
                         loading.dismiss();
@@ -91,14 +118,15 @@ export class ProfilePage {
     setHtml(id, html) {
         if ($('#' + id).html() == '' && html != '') {
             let div: any = document.createElement('div');
-            div.innerHTML = html;/*
-            [].forEach.call(div.getElementsByTagName("a"), (a) => {
-                var pageHref = a.getAttribute('onclick');
-                if (pageHref) {
-                    a.removeAttribute('onclick');
-                    a.onclick = () => this.getPage(pageHref);
-                }
-            });*/
+            div.innerHTML = html;
+            /*
+             [].forEach.call(div.getElementsByTagName("a"), (a) => {
+             var pageHref = a.getAttribute('onclick');
+             if (pageHref) {
+             a.removeAttribute('onclick');
+             a.onclick = () => this.getPage(pageHref);
+             }
+             });*/
             $('#' + id).append(div);
         }
     }
@@ -191,11 +219,12 @@ export class ProfilePage {
         alert.present();
     }
 
-    fullPagePhotos() {
+    fullPagePhotos(i) {
 
-        if(this.user.photos[0].url != 'http://www.shedate.co.il/images/users/small/0.jpg') {
+        if (this.user.photos[0].url != 'http://www.shedate.co.il/images/users/small/0.jpg') {
             this.navCtrl.push('FullScreenProfilePage', {
-                user: this.user
+                user: this.user,
+                i: i
             });
         }
     }
@@ -236,9 +265,6 @@ export class ProfilePage {
         this.reportAbuseClose();
     }
 
-    ionViewDidLoad() {
-        //console.log(this.user);
-    }
 
     ionViewWillLeave() {
         $('.back-btn').hide();

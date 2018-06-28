@@ -12,10 +12,6 @@
 </ion-header>
 
 <ion-content id="dialog" overflow-scroll="true" scroll="true">
-    <div class="admin-messages">
-        <span *ngIf="adminMessagesCount > 0" class="counter">{{adminMessagesCount}}</span>
-        <button *ngIf="user.userId == '468385291'" (click)="adminMessagesPage()" ion-button>הודעת מערכת</button>
-    </div>
     <ion-card>
         <ion-item>
             <p class="dialog-avatar" *ngIf="user?.mainImage != ''" (click)="toProfilePage()"
@@ -25,15 +21,14 @@
                [ngStyle]="{ 'background-image': 'url(' + api.url + '/images/no_photo_' + user.gender + '.jpg' + ')'}">
                 {{user.nickName}}</p>
         </ion-item>
-        <p></p>
     </ion-card>
     <div class="messages">
-        <ion-card [ngClass]="{'other-msg': user.userId == msg?.from }" *ngFor="let msg of messages"
+        <ion-card [ngClass]="{'other-msg': user.userId == msg?.from }" *ngFor="let msg of messages;  let i = index" [attr.data-index]="i"
                   class="usr_msg msg-item">
             <ion-grid>
                 <ion-row>
                     <ion-col
-                            *ngIf="!msg.voiceUrl && msg?.text != 'לא ניתן לצפות בהודעה. לרכישת מנוי לחצי כאן' && msg?.text != 'לא ניתן לצפות בהודעה. לרכישת מנוי לחצי כאן או השתמשי בנקודה לקריאת הודעות'"
+                            *ngIf="!msg?.voiceUrl && msg?.text != 'לא ניתן לצפות בהודעה. לרכישת מנוי לחצי כאן' && msg?.text != 'לא ניתן לצפות בהודעה. לרכישת מנוי לחצי כאן או השתמשי בנקודה לקריאת הודעות'"
                             class="text" width-75>
                         <ion-card-content [innerHTML]="msg?.text" item-left>
                         </ion-card-content>
@@ -55,7 +50,7 @@
                             הודעות
                         </ion-card-content>
                     </ion-col>
-                    <ion-col *ngIf="msg.voiceUrl && msg?.text != 'לא ניתן לצפות בהודעה. לרכישת מנוי לחצי כאן או השתמשי בנקודה לקריאת הודעות' && msg?.text != 'לא ניתן לצפות בהודעה. לרכישת מנוי לחצי כאן'" class="text" width-75>
+                    <ion-col *ngIf="msg?.voiceUrl && msg?.text != 'לא ניתן לצפות בהודעה. לרכישת מנוי לחצי כאן או השתמשי בנקודה לקריאת הודעות' && msg?.text != 'לא ניתן לצפות בהודעה. לרכישת מנוי לחצי כאן'" class="text" width-75>
                         <ion-card-content class="msg-{{msg.id}}" item-left>
                             <div class="duration-bar"><span class="mejs-time-total"><span class="runner"></span></span></div>
                             <button *ngIf="(isPlay == false) || (currentMsgPlay != msg.id && isPlay == true )" style="width:19%;" class="play-button" (click)="playrecord(msg)" ion-button
@@ -76,20 +71,20 @@
                     </ion-col>-->
                     <ion-col class="status" width-25>
                         <ion-card-content class="date" item-right>
-                            <div class="time">{{msg.time}}
+                            <div class="time">{{msg?.time}}
                             </div>
-                            <div class="date">{{msg.date}}</div>
+                            <div class="date">{{msg?.date}}</div>
                             <!--<ion-icon *ngIf="user?.id == msg.from" name="checkmark"></ion-icon>-->
                             <div *ngIf="user.userId != msg?.from">
-                                <ion-icon *ngIf="user?.id != msg.from && msg.isRead == 0" name="done-all"
+                                <ion-icon *ngIf="user?.id != msg?.from && msg?.isRead == 0" name="done-all"
                                           class="v-ios-icon"></ion-icon>
-                                <ion-icon color="danger" *ngIf="user?.id != msg.from && msg.isRead == 1" name="done-all"
+                                <ion-icon color="danger" *ngIf="user?.id != msg?.from && msg?.isRead == 1" name="done-all"
                                           class="v-ios-icon icon-md-danger"></ion-icon>
                             </div>
                         </ion-card-content>
                         <ion-icon
-                                *ngIf="msg?.text != 'לצפיה בהודעה לחצי' && msg?.text != 'לצפיה בהודעה לחצי לרכישת מנוי או לשימוש בנקודה'"
-                                (click)="deleteMsg(msg)" class="delete" name="ios-trash-outline"></ion-icon>
+                                *ngIf="msg.id > 0  && (msg?.text != 'לצפיה בהודעה לחצי' && msg?.text != 'לצפיה בהודעה לחצי לרכישת מנוי או לשימוש בנקודה')"
+                                (click)="deleteMsg(msg,i)" class="delete" name="ios-trash-outline"></ion-icon>
                     </ion-col>
                 </ion-row>
             </ion-grid>

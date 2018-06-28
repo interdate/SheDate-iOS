@@ -20,15 +20,11 @@ declare var $: any;
 export class AdminMessagesPage {
 
     messages: any;
-
     user: any;
 
     constructor(public navCtrl: NavController, public api: ApiQuery, public navParams: NavParams, public http: Http) {
 
         this.user = navParams.get('user');
-
-        console.log(this.user);
-
         this.getPage();
         this.setMessagesAsRead()
     }
@@ -53,6 +49,7 @@ export class AdminMessagesPage {
     getPage() {
         this.http.get(this.api.url + '/user/admin-messages', this.api.setHeaders(true)).subscribe(data => {
             this.messages = data.json().messages;
+            console.log(this.user);
         }, err => {
             console.log("Oops!");
         });

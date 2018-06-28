@@ -1,4 +1,6 @@
 page-home {
+  $app-direction: rtl;
+
   .sorting {
     width: 320px;
     right: 50%;
@@ -90,7 +92,7 @@ page-home {
     width: 45% !important;
     float: none !important;
     display: inline-block !important;
-    padding: 0 5px !important;
+    //padding: 0 5px !important;
   }
   .card-ios:nth-child(even) {
     margin: 0 2% 0 2.5%;

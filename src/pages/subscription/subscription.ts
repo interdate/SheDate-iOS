@@ -84,11 +84,11 @@ export class SubscriptionPage {
     }
 
     showed(i, product) {
-        this.is_showed[i] = !this.is_showed[i];
+        //this.is_showed[i] = !this.is_showed[i];
 
-        if (this.is_showed[i] == false) {
+        //if (this.is_showed[i] == false) {
             this.subscribe(product)
-        }
+        //}
     }
 
     sendSubscribe(history) {

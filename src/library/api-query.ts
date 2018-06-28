@@ -35,11 +35,11 @@ export class ApiQuery {
                 private geolocation: Geolocation,
                 public keyboard: Keyboard,
                 public plt: Platform) {
-        //this.url = 'http://10.0.0.6:8100';
+       // this.url = 'http://10.0.0.6:8100';
 
-        this.url = 'http://localhost:8100';
+       //this.url = 'http://localhost:8100';
 
-       // this.url = 'https://www.shedate.co.il/api/v1';
+        this.url = 'https://www.shedate.co.il/api/v1';
 
         this.storage.get('user_id').then((val) => {
             this.storage.get('username').then((username) => {
@@ -76,8 +76,8 @@ export class ApiQuery {
 
         this.geolocation.getCurrentPosition().then((pos) => {
             var params = JSON.stringify({
-                latitude: pos.coords.latitude,
-                longitude: pos.coords.longitude
+                latitude: ''+pos.coords.latitude+'',
+                longitude: ''+pos.coords.longitude+''
             });
 
             this.http.post(this.url + '/user/location', params, this.setHeaders(true)).subscribe(data => {
