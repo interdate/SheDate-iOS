@@ -35,7 +35,7 @@
                 <div *ngIf="user.isOnline == '1'" class="online"></div>
                 <div *ngIf="user.isNew == '1'" class="new-user"></div>
                 <div *ngIf="user.isPaying == '1'" class="paying"></div>
-               <div tappable (click)="itemTapped(user)" [ngStyle]="{ 'background-image': 'url(' + user.photo+ ')','background-position': 'top'}"
+               <div tappable (click)="itemTapped(user)" [ngStyle]="{ 'background-image': 'url(' + user?.photo+ ')','background-position': 'top'}"
                      class="avatar"></div>
 
 <!--

@@ -82,39 +82,40 @@ export class AdvancedSearchResultPage {
     }
 
     addLike(user) {
+        if (user.isLike == '0') {
+            let alert = this.alertCtrl.create({
+                title: 'האם את בטוחה?',
+                buttons: [
+                    {
+                        text: 'לֹא',
+                        role: 'cancel'
+                    },
+                    {
+                        text: 'כן',
+                        handler: data => {
+                            user.isLike = true;
+                            let toast = this.toastCtrl.create({
+                                message: ' עשית לייק ל' + user.userNick,
+                                duration: 2000
+                            });
 
-        let alert = this.alertCtrl.create({
-            title: 'האם את בטוחה?',
-            buttons: [
-                {
-                    text: 'לֹא',
-                    role: 'cancel'
-                },
-                {
-                    text: 'כן',
-                    handler: data => {
-                        user.isAddLike = true;
-                        let toast = this.toastCtrl.create({
-                            message: ' עשית לייק ל' + user.userNick,
-                            duration: 2000
-                        });
+                            toast.present();
 
-                        toast.present();
+                            let params = JSON.stringify({
+                                toUser: user.id,
+                            });
 
-                        let params = JSON.stringify({
-                            toUser: user.id,
-                        });
-
-                        this.http.post(this.api.url + '/user/like/' + user.id, params, this.api.setHeaders(true)).subscribe(data => {
-                            console.log(data);
-                        }, err => {
-                            console.log("Oops!");
-                        });
+                            this.http.post(this.api.url + '/user/like/' + user.id, params, this.api.setHeaders(true)).subscribe(data => {
+                                console.log(data);
+                            }, err => {
+                                console.log("Oops!");
+                            });
+                        }
                     }
-                }
-            ]
-        });
-        alert.present();
+                ]
+            });
+            alert.present();
+        }
     }
 
     block(user, bool) {
@@ -271,37 +272,38 @@ export class AdvancedSearchResultPage {
             this.api.hideLoad();
         });
     }
+
     /*
-    moreUsers(infiniteScroll) {
+     moreUsers(infiniteScroll) {
 
-        this.page_counter++;
+     this.page_counter++;
 
-        this.moreUsers(infiniteScroll);
+     this.moreUsers(infiniteScroll);
 
-        if( this.page_counter == 1000){
-            infiniteScroll.enable(false);
-        }
-    }
+     if( this.page_counter == 1000){
+     infiniteScroll.enable(false);
+     }
+     }
 
-    getMoreUsers(infiniteScroll?){
-        let that = this;
+     getMoreUsers(infiniteScroll?){
+     let that = this;
 
-        this.params.page = that.page_counter;
-        this.params_str = JSON.stringify(that.params);
-        this.http.post(that.api.url + '/users/search/', that.get_params, that.api.setHeaders(true)).subscribe(data => {
-            /!*if(data.json().users.length < this.params.usersCount){
-             infiniteScroll.enable(false);
-             }*!/
+     this.params.page = that.page_counter;
+     this.params_str = JSON.stringify(that.params);
+     this.http.post(that.api.url + '/users/search/', that.get_params, that.api.setHeaders(true)).subscribe(data => {
+     /!*if(data.json().users.length < this.params.usersCount){
+     infiniteScroll.enable(false);
+     }*!/
 
 
-            this.users = that.users.concat(data.json().users);
-            if (infiniteScroll) {
-                infiniteScroll.complete();
-            }
+     this.users = that.users.concat(data.json().users);
+     if (infiniteScroll) {
+     infiniteScroll.complete();
+     }
 
-        });
+     });
 
-    }*/
+     }*/
 
     moreUsers(infiniteScroll: any) {
         //alert(this.loader);

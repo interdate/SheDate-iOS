@@ -113,7 +113,7 @@ export class ChangePhotosPage {
         this.http.get(this.api.url + '/user/images', this.api.setHeaders(true, this.username, this.password)).subscribe(data => {
 
             this.dataPage = data.json();
-            //this.description = data.json().texts.description;
+            this.description = data.json().texts.description;
             this.photos = data.json().images.items;
         }, err => {
             //alert(JSON.stringify(err));

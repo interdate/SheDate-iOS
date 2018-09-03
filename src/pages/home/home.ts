@@ -126,39 +126,42 @@ export class HomePage {
     }
 
     addLike(user) {
+        if(user.isLike == '0') {
 
-        let alert = this.alertCtrl.create({
-            title: 'האם את בטוחה?',
-            buttons: [
-                {
-                    text: 'לֹא',
-                    role: 'cancel'
-                },
-                {
-                    text: 'כן',
-                    handler: data => {
-                        user.isAddLike = true;
-                        let toast = this.toastCtrl.create({
-                            message: ' עשית לייק ל' + user.userNick,
-                            duration: 2000
-                        });
+            let alert = this.alertCtrl.create({
+                title: 'האם את בטוחה?',
+                buttons: [
+                    {
+                        text: 'לֹא',
+                        role: 'cancel'
+                    },
+                    {
+                        text: 'כן',
+                        handler: data => {
+                            user.isLike = true;
+                            console.log(user);
+                            let toast = this.toastCtrl.create({
+                                message: ' עשית לייק ל' + user.userNick,
+                                duration: 2000
+                            });
 
-                        toast.present();
+                            toast.present();
 
-                        let params = JSON.stringify({
-                            toUser: user.id,
-                        });
+                            let params = JSON.stringify({
+                                toUser: user.id,
+                            });
 
-                        this.http.post(this.api.url + '/user/like/' + user.id, params, this.api.setHeaders(true)).subscribe(data => {
-                            console.log(data);
-                        }, err => {
-                            console.log("Oops!");
-                        });
+                            this.http.post(this.api.url + '/user/like/' + user.id, params, this.api.setHeaders(true)).subscribe(data => {
+                                console.log(data);
+                            }, err => {
+                                console.log("Oops!");
+                            });
+                        }
                     }
-                }
-            ]
-        });
-        alert.present();
+                ]
+            });
+            alert.present();
+        }
     }
 
     block(user, bool) {

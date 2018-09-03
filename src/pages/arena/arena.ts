@@ -119,7 +119,6 @@ export class ArenaPage {
       if(this.slides.getActiveIndex() == 1){
           console.log(this.users[this.slides.getActiveIndex()]);
 
-          console.log(this.slides.getActiveIndex());
       }
     }
 
@@ -135,6 +134,8 @@ export class ArenaPage {
       this.navCtrl.push(ProfilePage, {
           user: user
       });
+        console.log('USER: ' + JSON.stringify(user));
+
     }
 
     toNotifications() {
