@@ -19,7 +19,7 @@ import {Page} from "../page/page";
 })
 export class SubscriptionPage {
 
-    public products: Array<{ productId: any, title: any, price: any, description: any }>;
+    public products: any;//Array<{ productId: any, title: any, price: any, description: any }>;
     faq: Array<{ q: string, a: string }>;
     hightlightStatus: Array<boolean> = [];
     is_showed: Array<boolean> = [];
@@ -36,13 +36,42 @@ export class SubscriptionPage {
 
         this.api.showLoad();
         this.iap
-            .getProducts(['shedate.oneMonth', 'shedate.threeMonths'])
+            .getProducts(['shedate.oneWeek','shedate.oneMonth', 'shedate.threeMonths','shedate.sixMonth','shedate.oneYear'])
             .then((products) => {
                 this.products = products;
+                var prodProds = ['shedate.oneWeek','shedate.oneMonth', 'shedate.threeMonths','shedate.sixMonth','shedate.oneYear'];
+                for (var id in this.products) {
+                    var product = this.products[id];
+                    if(product.productId == 'shedate.oneWeek'){
+                        product.title = "מנוי שבועי מתחדש";
+                        product.description = "מנוי מתחדש כל שבוע";
+                        prodProds[0] = product;
+                    }else if(product.productId == 'shedate.oneMonth'){
+                        product.title = "מנוי חודשי מתחדש";
+                        product.description = "מנוי מתחדש כל חודש";
+                        prodProds[1] = product;
+                    }else if(product.productId == 'shedate.threeMonths'){
+                        product.title = "מנוי תלת חודשי מתחדש";
+                        product.description = "מנוי מתחדש כל שלושה חודשים";
+                        prodProds[2] = product;
+                    }else if(product.productId == 'shedate.sixMonth'){
+                        product.title = "מנוי חצי שנתי מתחדש";
+                        product.description = "מנוי מתחדש כל חצי שנה";
+                        prodProds[3] = product;
+                    }else if(product.productId == 'shedate.oneYear'){
+                        product.title = "מנוי שנתי מתחדש";
+                        product.description = "מנוי מתחדש כל שנה";
+                        prodProds[4] = product;
+                    }else{
+                        prodProds.push(product);
+                    }
+                }
+                this.products = prodProds;
                 this.api.hideLoad();
             })
             .catch((err) => {
-                alert(JSON.stringify(err));
+                this.api.hideLoad();
+                console.log(JSON.stringify(err));
             });
 
     }
@@ -50,6 +79,9 @@ export class SubscriptionPage {
     subscribe(product) {
         this.api.showLoad();
         switch (product.productId) {
+            case 'shedate.oneWeek':
+                var monthsNumber = 0.5;
+                break;
             case 'shedate.oneMonth':
                 var monthsNumber = 1;
                 break;
@@ -58,11 +90,11 @@ export class SubscriptionPage {
                 var monthsNumber = 3;
                 break;
 
-            case 'SixMon':
+            case 'shedate.sixMonth':
                 var monthsNumber = 6;
                 break;
 
-            case 'OneY':
+            case 'shedate.oneYear':
                 var monthsNumber = 12;
                 break;
         }
@@ -79,7 +111,7 @@ export class SubscriptionPage {
             })
             .catch((err)=> {
                 this.api.hideLoad();
-                alert(JSON.stringify(err));
+                console.log(JSON.stringify(err));
             });
     }
 
@@ -100,7 +132,7 @@ export class SubscriptionPage {
             }
 
         }, err => {
-            alert(JSON.stringify(err));
+            console.log(JSON.stringify(err));
         });
     }
 
@@ -119,7 +151,8 @@ export class SubscriptionPage {
              */
             that.sendSubscribe(data);
         }).catch(function (err) {
-            alert(JSON.stringify(err));
+            //this.api.hideLoad();
+            console.log(JSON.stringify(err));
         });
     }
 
@@ -145,9 +178,12 @@ export class SubscriptionPage {
         this.navCtrl.push(Page, {pageId: id});
     }
 
-
     ionViewDidLoad() {
         console.log('ionViewDidLoad SubscriptionPage');
+    }
+
+    ionViewWillEnter() {
+        this.api.pageName = 'SubscriptionPage';
     }
 
 }

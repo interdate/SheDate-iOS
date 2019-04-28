@@ -137,10 +137,11 @@ export class RegisterPage {
 
         profileModal.onDidDismiss(data => {
             if (data) {
+
                 let choosedVal = data.val;
                 this.user[field.name] = choosedVal;
                 if(field.name.indexOf('userBirthday') == -1) {
-                    this.form.fields[index]['valLabel'] = data.label;
+                    this.form.fields[index]['valLabel'] = (data.label == 'לא רלוונטי') ? data.val : data.label;
                 }else{
                     for(let i=0; i<3; i++){
                         if(field.name == this.form.fields[index]['sel'][i].name){

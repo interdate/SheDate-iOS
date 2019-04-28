@@ -36,7 +36,7 @@ export class ApiQuery {
                 public keyboard: Keyboard,
                 public plt: Platform) {
        // this.url = 'http://10.0.0.6:8100';
-       // this.url = 'http://localhost:8101';
+        //this.url = 'http://localhost:8100';
 
         this.url = 'https://www.shedate.co.il/api/v1';
 

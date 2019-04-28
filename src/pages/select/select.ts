@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
+import {ApiQuery} from "../../library/api-query";
 
 /**
  * Generated class for the SelectPage page.
@@ -16,12 +17,12 @@ import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular
 export class SelectPage {
 
   data: any;
-  options: any = [];
+  options: any = [{label:'לא רלוונטי',value: ''}];
   page: any = 1;
     count: any = 50;
     opt_add:any = true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, public api: ApiQuery) {
 
     this.data = this.navParams.get('data');
     this.addOption();
@@ -103,5 +104,9 @@ export class SelectPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad SelectPage');
   }
+
+    ionViewWillEnter() {
+        this.api.pageName = 'SelectPage';
+    }
 
 }
