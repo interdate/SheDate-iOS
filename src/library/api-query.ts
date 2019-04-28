@@ -38,7 +38,7 @@ export class ApiQuery {
        // this.url = 'http://10.0.0.6:8100';
        this.url = 'http://localhost:8100';
 
-       // this.url = 'https://www.shedate.co.il/api/v1';
+        //this.url = 'https://www.shedate.co.il/api/v1';
 
         this.storage.get('user_id').then((val) => {
             this.storage.get('username').then((username) => {

@@ -19,7 +19,7 @@ import {Page} from "../page/page";
 })
 export class SubscriptionPage {
 
-    public products: Array<{ productId: any, title: any, price: any, description: any }>;
+    public products: any = ['shedate.oneWeek','shedate.oneMonth', 'shedate.threeMonths', 'shedate.sixMonth', 'shedate.oneYear'];
     faq: Array<{ q: string, a: string }>;
     hightlightStatus: Array<boolean> = [];
     is_showed: Array<boolean> = [];
@@ -36,13 +36,46 @@ export class SubscriptionPage {
 
         this.api.showLoad();
         this.iap
-            .getProducts(['shedate.oneMonth', 'shedate.threeMonths'])
+            .getProducts(['shedate.oneWeek','shedate.oneMonth', 'shedate.threeMonths', 'shedate.sixMonth', 'shedate.oneYear'])
             .then((products) => {
-                this.products = products;
+                console.log(JSON.stringify(products));
+                products.forEach(product => {
+
+                    if (product.productId == 'shedate.oneWeek') {
+                        product.id = 0;
+                        product.title = 'מנוי מתחדש לשבוע בשידייט';
+                        product.description = 'מנוי מתחדש כל שבוע המאפשר לך לקרוא הודעות ללא הגבלה';
+                    }
+                    if (product.productId == 'shedate.oneMonth') {
+                        product.id = 1;
+                        product.title = 'מנוי חודשי מתחדש בשידייט';
+                        product.description = 'מנוי מתחדש כל חודש המאפשר לך לקרוא הודעות ללא הגבלה';
+                    }
+                    if (product.productId == 'shedate.threeMonths') {
+                        product.id = 2;
+                        product.title = 'מנוי מתחדש ל3 חודשים בשידייט';
+                        product.description = 'מנוי מתחדש כל 3 חודשים המאפשר לך לקרוא הודעות ללא הגבלה';
+                    }
+                    if (product.productId == 'shedate.sixMonth') {
+                        product.id = 3;
+                        product.title = 'מנוי מתחדש ל6 חודשים בשידייט';
+                        product.description = 'מנוי מתחדש כל 6 חודשים המאפשר לך לקרוא הודעות ללא הגבלה';
+                    }
+                    if (product.productId == 'shedate.oneYear') {
+                        product.id = 4;
+                        product.title = 'מנוי מתחדש לשנה אחת בשידייט';
+                        product.description = 'מנוי מתחדש כל שנה המאפשר לך לקרוא הודעות ללא הגבלה';
+                    }
+
+                    this.products[product.id] = product;
+                });
+                console.log(JSON.stringify(this.products));
+                //this.products = products;
                 this.api.hideLoad();
             })
             .catch((err) => {
-                alert(JSON.stringify(err));
+                //alert(JSON.stringify(err));
+                console.log(JSON.stringify(err));
             });
 
     }
@@ -50,6 +83,10 @@ export class SubscriptionPage {
     subscribe(product) {
         this.api.showLoad();
         switch (product.productId) {
+            case 'shedate.oneWeek':
+                var monthsNumber = 0.5;
+                break;
+
             case 'shedate.oneMonth':
                 var monthsNumber = 1;
                 break;
@@ -58,11 +95,11 @@ export class SubscriptionPage {
                 var monthsNumber = 3;
                 break;
 
-            case 'SixMon':
+            case 'shedate.sixMonth':
                 var monthsNumber = 6;
                 break;
 
-            case 'OneY':
+            case 'shedate.oneYear':
                 var monthsNumber = 12;
                 break;
         }
@@ -79,7 +116,8 @@ export class SubscriptionPage {
             })
             .catch((err)=> {
                 this.api.hideLoad();
-                alert(JSON.stringify(err));
+                //alert(JSON.stringify(err));
+                console.log(JSON.stringify(err));
             });
     }
 
@@ -100,7 +138,8 @@ export class SubscriptionPage {
             }
 
         }, err => {
-            alert(JSON.stringify(err));
+            //alert(JSON.stringify(err));
+            console.log(JSON.stringify(err));
         });
     }
 
@@ -119,7 +158,8 @@ export class SubscriptionPage {
              */
             that.sendSubscribe(data);
         }).catch(function (err) {
-            alert(JSON.stringify(err));
+            //alert(JSON.stringify(err));
+            console.log(JSON.stringify(err));
         });
     }
 
