@@ -2,7 +2,6 @@ import {Component} from "@angular/core";
 import {NavController, NavParams} from "ionic-angular";
 import {InAppPurchase} from "@ionic-native/in-app-purchase";
 import {ApiQuery} from "../../library/api-query";
-import {Http} from "@angular/http";
 import {HomePage} from "../home/home";
 import {Page} from "../page/page";
 
@@ -19,54 +18,57 @@ import {Page} from "../page/page";
 })
 export class SubscriptionPage {
 
-    public products: any;//Array<{ productId: any, title: any, price: any, description: any }>;
+    public products: any = ['shedate.oneWeek','shedate.oneMonth', 'shedate.threeMonths', 'shedate.sixMonth', 'shedate.oneYear'];
     faq: Array<{ q: string, a: string }>;
     hightlightStatus: Array<boolean> = [];
     is_showed: Array<boolean> = [];
     text: any;
 
-    constructor(public navCtrl: NavController, public http: Http, public navParams: NavParams, public api: ApiQuery, private iap: InAppPurchase) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public api: ApiQuery, private iap: InAppPurchase) {
 
         this.getRestore();
 
-        this.http.get(this.api.url + '/faq/payment', this.api.header).subscribe(data => {
+        this.api.http.get(this.api.url + '/faq/payment', this.api.header).subscribe(data => {
             this.faq = data.json().faq;
             this.text = data.json().text;
         });
 
         this.api.showLoad();
-        this.iap
-            .getProducts(['shedate.oneWeek','shedate.oneMonth', 'shedate.threeMonths','shedate.sixMonth','shedate.oneYear'])
+        this.iap.getProducts(['shedate.oneWeek','shedate.oneMonth', 'shedate.threeMonths', 'shedate.sixMonth', 'shedate.oneYear'])
             .then((products) => {
-                this.products = products;
-                var prodProds = ['shedate.oneWeek','shedate.oneMonth', 'shedate.threeMonths','shedate.sixMonth','shedate.oneYear'];
-                for (var id in this.products) {
-                    var product = this.products[id];
-                    if(product.productId == 'shedate.oneWeek'){
-                        product.title = "מנוי שבועי מתחדש";
-                        product.description = "מנוי מתחדש כל שבוע";
-                        prodProds[0] = product;
-                    }else if(product.productId == 'shedate.oneMonth'){
-                        product.title = "מנוי חודשי מתחדש";
-                        product.description = "מנוי מתחדש כל חודש";
-                        prodProds[1] = product;
-                    }else if(product.productId == 'shedate.threeMonths'){
-                        product.title = "מנוי תלת חודשי מתחדש";
-                        product.description = "מנוי מתחדש כל שלושה חודשים";
-                        prodProds[2] = product;
-                    }else if(product.productId == 'shedate.sixMonth'){
-                        product.title = "מנוי חצי שנתי מתחדש";
-                        product.description = "מנוי מתחדש כל חצי שנה";
-                        prodProds[3] = product;
-                    }else if(product.productId == 'shedate.oneYear'){
-                        product.title = "מנוי שנתי מתחדש";
-                        product.description = "מנוי מתחדש כל שנה";
-                        prodProds[4] = product;
-                    }else{
-                        prodProds.push(product);
+                console.log(JSON.stringify(products));
+                products.forEach(product => {
+
+                    if (product.productId == 'shedate.oneWeek') {
+                        product.id = 0;
+                        product.title = 'מנוי מתחדש לשבוע בשידייט';
+                        product.description = 'מנוי מתחדש כל שבוע המאפשר לך לקרוא הודעות ללא הגבלה';
                     }
-                }
-                this.products = prodProds;
+                    if (product.productId == 'shedate.oneMonth') {
+                        product.id = 1;
+                        product.title = 'מנוי חודשי מתחדש בשידייט';
+                        product.description = 'מנוי מתחדש כל חודש המאפשר לך לקרוא הודעות ללא הגבלה';
+                    }
+                    if (product.productId == 'shedate.threeMonths') {
+                        product.id = 2;
+                        product.title = 'מנוי מתחדש ל3 חודשים בשידייט';
+                        product.description = 'מנוי מתחדש כל 3 חודשים המאפשר לך לקרוא הודעות ללא הגבלה';
+                    }
+                    if (product.productId == 'shedate.sixMonth') {
+                        product.id = 3;
+                        product.title = 'מנוי מתחדש ל6 חודשים בשידייט';
+                        product.description = 'מנוי מתחדש כל 6 חודשים המאפשר לך לקרוא הודעות ללא הגבלה';
+                    }
+                    if (product.productId == 'shedate.oneYear') {
+                        product.id = 4;
+                        product.title = 'מנוי מתחדש לשנה אחת בשידייט';
+                        product.description = 'מנוי מתחדש כל שנה המאפשר לך לקרוא הודעות ללא הגבלה';
+                    }
+
+                    this.products[product.id] = product;
+                });
+                console.log(JSON.stringify(this.products));
+                //this.products = products;
                 this.api.hideLoad();
             })
             .catch((err) => {
@@ -78,39 +80,49 @@ export class SubscriptionPage {
 
     subscribe(product) {
         this.api.showLoad();
+        var monthsNumber = 1;
         switch (product.productId) {
             case 'shedate.oneWeek':
-                var monthsNumber = 0.5;
+                monthsNumber = 7;
                 break;
+
             case 'shedate.oneMonth':
-                var monthsNumber = 1;
+                monthsNumber = 1;
                 break;
 
             case 'shedate.threeMonths':
-                var monthsNumber = 3;
+                monthsNumber = 3;
                 break;
 
             case 'shedate.sixMonth':
-                var monthsNumber = 6;
+                monthsNumber = 6;
                 break;
 
             case 'shedate.oneYear':
-                var monthsNumber = 12;
+                monthsNumber = 12;
                 break;
         }
+        console.log('Subscribe: ' + monthsNumber);
+        var that = this;
         this.iap
             .subscribe(product.productId)
             .then((data)=> {
+                console.log(JSON.stringify(data));
                 if (parseInt(data.transactionId) > 0) {
-                    this.http.post(this.api.url + '/user/subscription/monthsNumber:' + monthsNumber, data, this.api.setHeaders(true)).subscribe(data => {
+                    console.log(that.api.setHeaders(true));
+                    that.api.http.post(that.api.url + '/user/subscription/monthsNumber:' + monthsNumber, data, that.api.setHeaders(true)).subscribe(subscr => {
                         //this.api.presentToast('Congratulations on your purchase of a paid subscription to Dating4Disabled.com', 10000);
-                        this.navCtrl.push(HomePage);
+                        that.navCtrl.push(HomePage);
+                        console.log(JSON.stringify(subscr));
+                    },error => {
+                        console.log(JSON.stringify(error));
                     });
                 }
-                this.api.hideLoad();
+                that.api.hideLoad();
             })
             .catch((err)=> {
-                this.api.hideLoad();
+                that.api.hideLoad();
+                //alert(JSON.stringify(err));
                 console.log(JSON.stringify(err));
             });
     }
@@ -125,14 +137,17 @@ export class SubscriptionPage {
 
     sendSubscribe(history) {
         //alert(JSON.stringify(history));
-        this.http.post(this.api.url + '/user/subscription/restore', history, this.api.setHeaders(true)).subscribe(data => {
+        console.log('Restore send: ' + JSON.stringify(history));
+        this.api.http.post(this.api.url + '/user/subscription/restore', history, this.api.setHeaders(true)).subscribe(data => {
             //alert(JSON.stringify(data.json()));
+            console.log(JSON.stringify(data.json()));
             if (data.json().payment == 1) {
                 this.navCtrl.push(HomePage);
             }
 
         }, err => {
-            console.log(JSON.stringify(err));
+            //alert(JSON.stringify(err));
+            console.log('Restore send: ' + JSON.stringify(err));
         });
     }
 
@@ -151,7 +166,8 @@ export class SubscriptionPage {
              */
             that.sendSubscribe(data);
         }).catch(function (err) {
-            //this.api.hideLoad();
+            this.api.hideLoad();
+            //alert(JSON.stringify(err));
             console.log(JSON.stringify(err));
         });
     }

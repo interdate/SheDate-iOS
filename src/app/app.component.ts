@@ -205,7 +205,7 @@ export class MyApp {
             var that = this;
             this.iap.restorePurchases().then(function (data) {
                 //this.restore = data;
-                console.log(data);
+                console.log('checkPayment: ' + JSON.stringify(data));
                 /*
                  [{
                  transactionId: ...
@@ -214,11 +214,14 @@ export class MyApp {
                  date: ...
                  }]
                  */
+                console.log(that.api.setHeaders(true));
                 that.http.post(that.api.url + '/user/subscription/restore', data, that.api.setHeaders(true)).subscribe(res => {
-                    //alert(JSON.stringify(data.json()));
+                    console.log('Restore: ' + JSON.stringify(res.json()));
+                }, error => {
+                    console.log('Restore: ' + error);
                 });
             }).catch(function (err) {
-                console.log(err);
+                //console.log('Restore: ' + err);
             });
         }
     }
